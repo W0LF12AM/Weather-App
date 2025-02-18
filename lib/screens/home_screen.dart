@@ -1,15 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
+import 'package:weather_app/widgets/cardWeather.dart';
 import 'package:weather_app/widgets/default.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+  HomeScreen({super.key});
+
+  final List<Map<String, String>> dataCuaca = [
+    {"asset": "lib/assets/cloudy.json", "time": "Now", "suhu": "29°"},
+    {"asset": "lib/assets/cloudy sun.json", "time": "4 PM", "suhu": "25°"},
+    {"asset": "lib/assets/rain.json", "time": "5 PM", "suhu": "21°"},
+    {"asset": "lib/assets/sun.json", "time": "6 PM", "suhu": "36°"},
+    {"asset": "lib/assets/thunder.json", "time": "7 PM", "suhu": "16°"},
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: mainColor,
+      backgroundColor: Colors.white,
       appBar: AppBar(
         actions: [
           Padding(
@@ -19,19 +28,19 @@ class HomeScreen extends StatelessWidget {
           )
         ],
         elevation: 0,
-        backgroundColor: mainColor,
+        backgroundColor: Colors.white,
         leading: IconButton(
           onPressed: () {},
           icon: Icon(Icons.menu),
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 40),
+        padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
         child: Column(
           children: [
             Center(
               child: Text(
-                'Mumbai, India',
+                'Bogor, Indonesia',
                 style: GoogleFonts.poppins(
                     fontWeight: FontWeight.normal, fontSize: 20),
               ),
@@ -39,7 +48,7 @@ class HomeScreen extends StatelessWidget {
             SizedBox(
               height: 20,
             ),
-            Lottie.asset('lib/assets/weather_animation.json'),
+            Lottie.asset('lib/assets/rain.json'),
             SizedBox(
               height: 20,
             ),
@@ -122,8 +131,64 @@ class HomeScreen extends StatelessWidget {
                 ],
               ),
             ),
+            SizedBox(
+              height: 10,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: SizedBox(
+                height: 170,
+                child: ListView.builder(
+                    itemCount: dataCuaca.length,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index) {
+                      final data = dataCuaca[index];
+                      return Cardweather(
+                        assetsPath: data["asset"]!,
+                        jam: data["time"]!,
+                        suhu: data["suhu"]!,
+                      );
+                    }),
+              ),
+            )
           ],
         ),
+      ),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.fromLTRB(15, 0, 15, 15),
+        child: Container(
+            height: 56,
+            decoration: BoxDecoration(
+                color: Colors.black.withOpacity(0.8),
+                borderRadius: BorderRadius.circular(20)),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 25),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Icon(
+                    Icons.home_filled,
+                    color: mainColor,
+                    size: 30,
+                  ),
+                  Icon(
+                    Icons.search,
+                    color: mainColor,
+                    size: 30,
+                  ),
+                  Icon(
+                    Icons.notifications,
+                    color: mainColor,
+                    size: 30,
+                  ),
+                  Icon(
+                    Icons.map,
+                    color: mainColor,
+                    size: 30,
+                  )
+                ],
+              ),
+            )),
       ),
     );
   }
