@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
+import 'package:weather_app/screens/search_screen.dart';
 import 'package:weather_app/widgets/cardWeather.dart';
 import 'package:weather_app/widgets/default.dart';
 
@@ -24,7 +25,7 @@ class HomeScreen extends StatelessWidget {
           Padding(
             padding:
                 EdgeInsets.only(right: MediaQuery.sizeOf(context).width * 0.03),
-            child: const Icon(Icons.calendar_today),
+            child: const Icon(Icons.sunny),
           )
         ],
         elevation: 0,
@@ -155,37 +156,41 @@ class HomeScreen extends StatelessWidget {
         ),
       ),
       bottomNavigationBar: Padding(
-        padding: const EdgeInsets.fromLTRB(15, 0, 15, 15),
+        padding: const EdgeInsets.fromLTRB(50, 0, 50, 15),
         child: Container(
             height: 56,
             decoration: BoxDecoration(
                 color: Colors.black.withOpacity(0.8),
                 borderRadius: BorderRadius.circular(20)),
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 25),
+              padding: const EdgeInsets.symmetric(horizontal: 50),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Icon(
-                    Icons.home_filled,
+                  IconButton(
+                    onPressed: () {},
+                    icon: Icon(Icons.home_filled),
                     color: mainColor,
-                    size: 30,
+                    iconSize: 30,
                   ),
-                  Icon(
-                    Icons.search,
+                  IconButton(
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => SearchScreen(),
+                          ));
+                    },
+                    icon: Icon(Icons.search),
                     color: mainColor,
-                    size: 30,
+                    iconSize: 30,
                   ),
-                  Icon(
-                    Icons.notifications,
+                  IconButton(
+                    onPressed: () {},
+                    icon: Icon(Icons.calendar_month_outlined),
                     color: mainColor,
-                    size: 30,
+                    iconSize: 30,
                   ),
-                  Icon(
-                    Icons.map,
-                    color: mainColor,
-                    size: 30,
-                  )
                 ],
               ),
             )),
