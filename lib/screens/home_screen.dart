@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
-import 'package:weather_app/screens/search_screen.dart';
+
+import 'package:weather_app/widgets/bottomNavBar.dart';
 import 'package:weather_app/widgets/cardWeather.dart';
-import 'package:weather_app/widgets/default.dart';
+
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
@@ -19,182 +20,142 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        actions: [
-          Padding(
-            padding:
-                EdgeInsets.only(right: MediaQuery.sizeOf(context).width * 0.03),
-            child: const Icon(Icons.sunny),
-          )
-        ],
-        elevation: 0,
         backgroundColor: Colors.white,
-        leading: IconButton(
-          onPressed: () {},
-          icon: Icon(Icons.menu),
-        ),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-        child: Column(
-          children: [
-            Center(
-              child: Text(
-                'Bogor, Indonesia',
-                style: GoogleFonts.poppins(
-                    fontWeight: FontWeight.normal, fontSize: 20),
-              ),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            Lottie.asset('lib/assets/rain.json'),
-            SizedBox(
-              height: 20,
-            ),
-            Text(
-              '29° c',
-              style: GoogleFonts.poppins(
-                  fontWeight: FontWeight.bold, fontSize: 40),
-            ),
-            Text(
-              'Expect high rain today.',
-              style: GoogleFonts.poppins(
-                  fontWeight: FontWeight.normal, fontSize: 15),
-            ),
-            SizedBox(
-              height: 30,
-            ),
+        appBar: AppBar(
+          actions: [
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 30),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      Icon(Icons.wind_power_sharp),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Text(
-                        '11km/hr',
-                        style: GoogleFonts.poppins(
-                            fontSize: 15, fontWeight: FontWeight.normal),
-                      )
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Icon(Icons.water_drop_outlined),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Text(
-                        '02%',
-                        style: GoogleFonts.poppins(
-                            fontSize: 15, fontWeight: FontWeight.normal),
-                      )
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Icon(Icons.wb_sunny_outlined),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Text(
-                        '8hr',
-                        style: GoogleFonts.poppins(
-                            fontSize: 15, fontWeight: FontWeight.normal),
-                      )
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(
-              height: 30,
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 15),
-              child: Row(
-                children: [
-                  Icon(Icons.access_time_outlined),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Text(
-                    'Hourly Forecast',
-                    style: GoogleFonts.poppins(
-                        fontWeight: FontWeight.w500, fontSize: 18),
-                  )
-                ],
-              ),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: SizedBox(
-                height: 170,
-                child: ListView.builder(
-                    itemCount: dataCuaca.length,
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (context, index) {
-                      final data = dataCuaca[index];
-                      return Cardweather(
-                        assetsPath: data["asset"]!,
-                        jam: data["time"]!,
-                        suhu: data["suhu"]!,
-                      );
-                    }),
-              ),
+              padding: EdgeInsets.only(
+                  right: MediaQuery.sizeOf(context).width * 0.03),
+              child: const Icon(Icons.sunny),
             )
           ],
+          elevation: 0,
+          backgroundColor: Colors.white,
+          leading: IconButton(
+            onPressed: () {},
+            icon: Icon(Icons.menu),
+          ),
         ),
-      ),
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.fromLTRB(50, 0, 50, 15),
-        child: Container(
-            height: 56,
-            decoration: BoxDecoration(
-                color: Colors.black.withOpacity(0.8),
-                borderRadius: BorderRadius.circular(20)),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 50),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  IconButton(
-                    onPressed: () {},
-                    icon: Icon(Icons.home_filled),
-                    color: mainColor,
-                    iconSize: 30,
-                  ),
-                  IconButton(
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => SearchScreen(),
-                          ));
-                    },
-                    icon: Icon(Icons.search),
-                    color: mainColor,
-                    iconSize: 30,
-                  ),
-                  IconButton(
-                    onPressed: () {},
-                    icon: Icon(Icons.calendar_month_outlined),
-                    color: mainColor,
-                    iconSize: 30,
-                  ),
-                ],
+        body: Padding(
+          padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+          child: Column(
+            children: [
+              Center(
+                child: Text(
+                  'Bogor, Indonesia',
+                  style: GoogleFonts.poppins(
+                      fontWeight: FontWeight.normal, fontSize: 20),
+                ),
               ),
-            )),
-      ),
-    );
+              SizedBox(
+                height: 20,
+              ),
+              Lottie.asset('lib/assets/rain.json'),
+              SizedBox(
+                height: 20,
+              ),
+              Text(
+                '29° c',
+                style: GoogleFonts.poppins(
+                    fontWeight: FontWeight.bold, fontSize: 40),
+              ),
+              Text(
+                'Expect high rain today.',
+                style: GoogleFonts.poppins(
+                    fontWeight: FontWeight.normal, fontSize: 15),
+              ),
+              SizedBox(
+                height: 30,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 30),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        Icon(Icons.wind_power_sharp),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          '11km/hr',
+                          style: GoogleFonts.poppins(
+                              fontSize: 15, fontWeight: FontWeight.normal),
+                        )
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Icon(Icons.water_drop_outlined),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          '02%',
+                          style: GoogleFonts.poppins(
+                              fontSize: 15, fontWeight: FontWeight.normal),
+                        )
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Icon(Icons.wb_sunny_outlined),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          '8hr',
+                          style: GoogleFonts.poppins(
+                              fontSize: 15, fontWeight: FontWeight.normal),
+                        )
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: 30,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 15),
+                child: Row(
+                  children: [
+                    Icon(Icons.access_time_outlined),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Text(
+                      'Hourly Forecast',
+                      style: GoogleFonts.poppins(
+                          fontWeight: FontWeight.w500, fontSize: 18),
+                    )
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: SizedBox(
+                  height: 170,
+                  child: ListView.builder(
+                      itemCount: dataCuaca.length,
+                      scrollDirection: Axis.horizontal,
+                      itemBuilder: (context, index) {
+                        final data = dataCuaca[index];
+                        return Cardweather(
+                          assetsPath: data["asset"]!,
+                          jam: data["time"]!,
+                          suhu: data["suhu"]!,
+                        );
+                      }),
+                ),
+              )
+            ],
+          ),
+        ),
+        bottomNavigationBar: Bottomnavbar());
   }
 }
