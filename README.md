@@ -5,7 +5,7 @@ Aplikasi cuaca sederhana pakai **Flutter** yang fetch data dari API. Proyek ini 
 ## 🚀 Fitur
 - Cari cuaca berdasarkan nama kota
 - Menampilkan suhu, kondisi cuaca, dan nama kota
-- Menggunakan API cuaca (misalnya OpenWeatherMap)
+- Menggunakan API cuaca (OpenWeatherMap)
 
 ## 🧱 Stack
 - Flutter
