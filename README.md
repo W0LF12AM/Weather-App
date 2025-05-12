@@ -1,16 +1,16 @@
-# weather_app
+# 🌤️ Weather App
 
-A new Flutter project.
+Aplikasi cuaca sederhana pakai **Flutter** yang fetch data dari API. Proyek ini dibuat untuk latihan dasar penggunaan **HTTP request dan API** di Flutter.
 
-## Getting Started
+## 🚀 Fitur
+- Cari cuaca berdasarkan nama kota
+- Menampilkan suhu, kondisi cuaca, dan nama kota
+- Menggunakan API cuaca (OpenWeatherMap)
 
-This project is a starting point for a Flutter application.
+## 🧱 Stack
+- Flutter
+- HTTP package
+- Weather API dari OpenWeatherMap
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## ⚠️ Catatan:
+- Aplikasi ini belum sepenuhnya responsif dan masih sangat sederhana, karena fokus utama adalah belajar cara konsumsi API di Flutter.
