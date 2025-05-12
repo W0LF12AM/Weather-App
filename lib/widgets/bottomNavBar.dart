@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:weather_app/screens/calendar_screen.dart';
-import 'package:weather_app/screens/search_screen.dart';
 import 'package:weather_app/widgets/default.dart';
 
 class Bottomnavbar extends StatelessWidget {
-  const Bottomnavbar({super.key});
+  final int currentIndex;
+  final Function(int) onTap;
+
+  const Bottomnavbar(
+      {super.key, required this.currentIndex, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -21,32 +23,27 @@ class Bottomnavbar extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 IconButton(
-                  onPressed: () {},
+                  onPressed: () => onTap(0),
                   icon: Icon(Icons.home_filled),
-                  color: mainColor,
+                  color: currentIndex == 0
+                      ? mainColor
+                      : Colors.white.withOpacity(0.5),
                   iconSize: 30,
                 ),
                 IconButton(
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => SearchScreen(),
-                        ));
-                  },
+                  onPressed: () => onTap(1),
                   icon: Icon(Icons.search),
-                  color: mainColor,
+                  color: currentIndex == 1
+                      ? mainColor
+                      : Colors.white.withOpacity(0.5),
                   iconSize: 30,
                 ),
                 IconButton(
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => CalendarScreen()));
-                  },
+                  onPressed: () => onTap(2),
                   icon: Icon(Icons.calendar_month_outlined),
-                  color: mainColor,
+                  color: currentIndex == 2
+                      ? mainColor
+                      : Colors.white.withOpacity(0.5),
                   iconSize: 30,
                 ),
               ],
