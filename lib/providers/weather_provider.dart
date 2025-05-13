@@ -1,6 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:weather_app/core/services/weather_service.dart';
 import 'package:weather_app/models/weather_model.dart';
+import 'package:weather_app/models/hourly_weather_models.dart';
+import 'package:http/http.dart' as http;
 
 final Map<String, String> countryNames = {
   'ID': 'Indonesia',
@@ -58,4 +62,33 @@ class WeatherProvider with ChangeNotifier {
       notifyListeners();
     }
   }
+
+  Future<void> fetchHourlyWeather(String city) async {
+    final url = Uri.parse(
+        'https://api.openweathermap.org/data/2.5/forecast?q=$city&appid=b0b3541d1f66e99621205eba9b69be8d&units=metric');
+
+    final response = await http.get(url);
+    print('Fetching hourly weather for $city...');
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      final List list = data['list'];
+
+      list.take(5).forEach((item) {
+        print('🔍 Hourly temp: ${item['main']['temp']} - ${item['dt_txt']}');
+      });
+
+      _hourlyWeather = list
+          .take(5)
+          .map((item) => HourlyWeatherModels.fromJson(item))
+          .toList();
+
+      notifyListeners();
+    } else {
+      throw Exception('Failed to load hourly weather data');
+    }
+  }
+
+  List<HourlyWeatherModels> _hourlyWeather = [];
+  List<HourlyWeatherModels> get hourlyWeather => _hourlyWeather;
 }

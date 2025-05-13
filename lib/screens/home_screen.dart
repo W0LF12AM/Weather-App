@@ -4,6 +4,7 @@ import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:weather_app/providers/weather_provider.dart';
 import 'package:weather_app/widgets/cardWeather.dart';
+import 'package:weather_app/widgets/weather_icon.dart';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({super.key});
@@ -12,21 +13,38 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
-  final List<Map<String, String>> dataCuaca = [
-    {"asset": "lib/assets/cloudy.json", "time": "Now", "suhu": "29°"},
-    {"asset": "lib/assets/cloudy sun.json", "time": "4 PM", "suhu": "25°"},
-    {"asset": "lib/assets/rain.json", "time": "5 PM", "suhu": "21°"},
-    {"asset": "lib/assets/sun.json", "time": "6 PM", "suhu": "36°"},
-    {"asset": "lib/assets/thunder.json", "time": "7 PM", "suhu": "16°"},
-  ];
-
+class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Provider.of<WeatherProvider>(context, listen: false).loadWeather('Bogor');
+      final weatherProvider =
+          Provider.of<WeatherProvider>(context, listen: false);
+      weatherProvider.loadWeather('Bogor');
+      weatherProvider.fetchHourlyWeather('Bogor');
     });
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  void didChangeAppLifeCycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+
+    if (state == AppLifecycleState.resumed) {
+      Future.microtask(() {
+        final weatherProvider =
+            Provider.of<WeatherProvider>(context, listen: false);
+        weatherProvider.loadWeather('Bogor');
+        weatherProvider.fetchHourlyWeather('Bogor');
+        print('App resumed');
+      });
+    }
   }
 
   @override
@@ -48,7 +66,9 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: Center(
         child: weatherProvider.isLoading
-            ? const CircularProgressIndicator()
+            ? const CircularProgressIndicator(
+                color: Colors.black,
+              )
             : weatherProvider.weather == null
                 ? Text(
                     'Gagal memuat cuaca',
@@ -65,19 +85,19 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: Text(
                             '${weatherProvider.weather!.cityName}, ${countryNames[weatherProvider.weather!.countryCode] ?? weatherProvider.weather!.countryCode}',
                             style: GoogleFonts.poppins(
-                                fontWeight: FontWeight.normal, fontSize: 20),
+                                fontWeight: FontWeight.bold, fontSize: 24),
                           ),
                         ),
                         SizedBox(
-                          height: 20,
+                          height: 10,
                         ),
-                        Lottie.asset('lib/assets/rain.json'),
+                        Lottie.asset(getWeatherIcon(
+                            weatherProvider.weather!.description)),
                         SizedBox(
                           height: 20,
                         ),
                         Text(
-                          weatherProvider.weather!.temperature.toString() +
-                              "°C",
+                          '${weatherProvider.weather!.temperature.round()}°C',
                           style: GoogleFonts.poppins(
                               fontWeight: FontWeight.bold, fontSize: 40),
                         ),
@@ -151,7 +171,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 width: 10,
                               ),
                               Text(
-                                'Hourly Forecast',
+                                'Next Forecast',
                                 style: GoogleFonts.poppins(
                                     fontWeight: FontWeight.w500, fontSize: 18),
                               )
@@ -161,23 +181,71 @@ class _HomeScreenState extends State<HomeScreen> {
                         SizedBox(
                           height: 10,
                         ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          child: SizedBox(
-                            height: 170,
-                            child: ListView.builder(
-                                itemCount: dataCuaca.length,
-                                scrollDirection: Axis.horizontal,
-                                itemBuilder: (context, index) {
-                                  final data = dataCuaca[index];
-                                  return Cardweather(
-                                    assetsPath: data["asset"]!,
-                                    jam: data["time"]!,
-                                    suhu: data["suhu"]!,
-                                  );
-                                }),
-                          ),
-                        )
+
+                        Consumer<WeatherProvider>(
+                            builder: (context, provider, child) {
+                          if (provider.hourlyWeather.isEmpty) {
+                            return Center(
+                              child: Text(
+                                'No hourly data available',
+                                style: GoogleFonts.poppins(
+                                    fontWeight: FontWeight.normal,
+                                    fontSize: 16,
+                                    color: Colors.black),
+                              ),
+                            );
+                          } else {
+                            return SizedBox(
+                              height: 160,
+                              child: ListView.builder(
+                                  itemCount: provider.hourlyWeather.length,
+                                  scrollDirection: Axis.horizontal,
+                                  itemBuilder: (context, index) {
+                                    final forecast =
+                                        provider.hourlyWeather[index];
+                                    final iconPath =
+                                        getWeatherIcon(forecast.description);
+                                    return Cardweather(
+                                      assetsPath: iconPath,
+                                      jam: forecast.dateTime.hour.toString() +
+                                          ':00',
+                                      suhu: '${forecast.temperature.round()}°C',
+                                    );
+                                  }),
+                            );
+                          }
+                        })
+                        // SizedBox(
+                        //   height: 140,
+                        //   child: weatherProvider.isLoading
+                        //       ? Center(
+                        //           child: CircularProgressIndicator(),
+                        //         )
+                        //       : Padding(
+                        //           padding: const EdgeInsets.symmetric(
+                        //               horizontal: 10),
+                        //           child: SizedBox(
+                        //             height: 170,
+                        //             child: ListView.builder(
+                        //                 itemCount: weatherProvider
+                        //                     .hourlyWeather.length,
+                        //                 scrollDirection: Axis.horizontal,
+                        //                 itemBuilder: (context, index) {
+                        //                   final forecast = weatherProvider
+                        //                       .hourlyWeather[index];
+                        //                   final iconPath = getWeatherIcon(
+                        //                       forecast.description);
+                        //                   return Cardweather(
+                        //                     assetsPath: iconPath,
+                        //                     jam: forecast.dateTime.hour
+                        //                         .toString(),
+                        //                     suhu:
+                        //                         '${forecast.temperature.round()}°C',
+                        //                   );
+                        //                 }),
+                        //           ),
+                        //         ),
+                        // )
                       ],
                     ),
                   ),

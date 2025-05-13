@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:weather_app/models/weather_model.dart';
 import 'package:http/http.dart' as http;
 
@@ -17,4 +16,6 @@ class WeatherService {
       throw Exception('Failed to load weather data');
     }
   }
+
+  
 }

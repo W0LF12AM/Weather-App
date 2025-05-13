@@ -20,7 +20,7 @@ class WeatherModel {
   factory WeatherModel.fromJson(Map<String, dynamic> json) {
     final sunrise = json['sys']['sunrise'];
     final sunset = json['sys']['sunset'];
-    final sunDuration = ((sunset - sunrise) / 3600).floor(); 
+    final sunDuration = ((sunset - sunrise) / 3600).floor();
 
     return WeatherModel(
       cityName: json['name'],
@@ -33,3 +33,5 @@ class WeatherModel {
     );
   }
 }
+
+
