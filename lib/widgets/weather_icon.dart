@@ -18,18 +18,18 @@ String getWeatherIcon(String description) {
 
 String getWeatherIconPath(String weatherMain) {
   switch (weatherMain.toLowerCase()) {
-    case 'clouds' :
+    case 'clouds':
       return 'lib/assets/cloudy.json';
-    case 'few clouds' :
-    case 'scattered clouds' :
+    case 'few clouds':
+    case 'scattered clouds':
       return 'lib/assets/cloudy sun.json';
-    case 'rain' :
-    case 'drizzle' :
+    case 'rain':
+    case 'drizzle':
       return 'lib/assets/rain.json';
-    case 'clear' :
-    case 'sunny' :
+    case 'clear':
+    case 'sunny':
       return 'lib/assets/sun.json';
-    case 'thunderstorm' :
+    case 'thunderstorm':
       return 'lib/assets/thunder.json';
     default:
       return 'lib/assets/cloudy.json';

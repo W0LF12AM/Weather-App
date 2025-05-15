@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:weather_app/core/services/weather_service.dart';
+import 'package:weather_app/models/city_model.dart';
+import 'package:weather_app/models/loc_model.dart';
 import 'package:weather_app/models/weather_model.dart';
 import 'package:weather_app/models/hourly_weather_models.dart';
 import 'package:http/http.dart' as http;
@@ -91,4 +93,37 @@ class WeatherProvider with ChangeNotifier {
 
   List<HourlyWeatherModels> _hourlyWeather = [];
   List<HourlyWeatherModels> get hourlyWeather => _hourlyWeather;
+
+  List<CityModel> _searchedCities = [];
+  bool _isSearching = false;
+
+  List<CityModel> get searchedCities => _searchedCities;
+  bool get isSearching => _isSearching;
+
+  Future<List<CityModel>> searchCities(String query) async {
+    _isSearching = true;
+    notifyListeners();
+
+    List<CityModel> result = [];
+
+    try {
+      final url = Uri.parse(
+          'http://api.openweathermap.org/geo/1.0/direct?q=$query&limit=5&appid=b0b3541d1f66e99621205eba9b69be8d');
+      final response = await http.get(url);
+
+      if (response.statusCode == 200) {
+        final List data = jsonDecode(response.body);
+        final result = data.map((item) => CityModel.fromJson(item)).toList();
+        _searchedCities = result;
+      } else {
+        _searchedCities = [];
+      }
+    } catch (e) {
+      _searchedCities = [];
+    }
+    _isSearching = false;
+    notifyListeners();
+
+    return result;
+  }
 }

@@ -22,8 +22,15 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final weatherProvider =
           Provider.of<WeatherProvider>(context, listen: false);
-      weatherProvider.loadWeather('Bogor');
-      weatherProvider.fetchHourlyWeather('Bogor');
+      weatherProvider.loadWeather('Sao Paulo').then((_) {
+        if (weatherProvider.weather == null) {
+          print('Gagal memuat cuaca');
+        } else {
+          print(
+              'Deskripsi Cuaca: ${weatherProvider.weather!.description} sama icon yang dipake ${getWeatherIconPath(weatherProvider.weather!.description)}');
+        }
+      });
+      weatherProvider.fetchHourlyWeather('Sao Paulo');
     });
   }
 
@@ -40,8 +47,8 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
       Future.microtask(() {
         final weatherProvider =
             Provider.of<WeatherProvider>(context, listen: false);
-        weatherProvider.loadWeather('Bogor');
-        weatherProvider.fetchHourlyWeather('Bogor');
+        weatherProvider.loadWeather('Sao Paulo');
+        weatherProvider.fetchHourlyWeather('Sao Paulo');
         print('App resumed');
       });
     }
@@ -91,7 +98,8 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                         SizedBox(
                           height: 10,
                         ),
-                        Lottie.asset(getWeatherIcon(
+
+                        Lottie.asset(getWeatherIconPath(
                             weatherProvider.weather!.description)),
                         SizedBox(
                           height: 20,
@@ -203,8 +211,8 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                                   itemBuilder: (context, index) {
                                     final forecast =
                                         provider.hourlyWeather[index];
-                                    final iconPath =
-                                        getWeatherIcon(forecast.description);
+                                    final iconPath = getWeatherIconPath(
+                                        forecast.description);
                                     return Cardweather(
                                       assetsPath: iconPath,
                                       jam: forecast.dateTime.hour.toString() +
